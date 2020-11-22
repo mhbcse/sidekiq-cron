@@ -576,10 +576,10 @@ module Sidekiq
             parsed_args = Sidekiq.load_json(args)
             symbolize_args? ? symbolize_args(parsed_args) : parsed_args
           rescue JSON::ParserError
-            symbolize_args? ? [args.symbolize_keys] : [args]   # cast to string array
+            [*args]   # cast to string array
           end
         when Hash
-          [args]      # just put hash into array
+          symbolize_args? ? [args.symbolize_keys] : [args]      # just put hash into array
         when Array
           symbolize_args? ? symbolize_args : parsed_args        # do nothing, already array
         else
